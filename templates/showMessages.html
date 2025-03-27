@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Messages</title>
+    <link rel= "stylesheet" type= "text/css" href= "{{ url_for('static', filename ='styles/styles.css') }}">
+    <link rel= "stylesheet" type= "text/css" href= "{{ url_for('static', filename ='styles/messages.css') }}">    
+    <style>
+    </style>
+</head>
+<body>
+<header>
+    <div id="nav-bar">
+	<div id="left-bar">
+            <button class="nav-option" id="send-message" onclick="location.href='./sendMessage'">Send Message</button>
+            <button class="nav-option" id="add-customers" onclick="location.href='./addNewCustomer'">Add Customers</button>
+            <button class="nav-option" id="view-customers"  onclick="location.href='./viewCustomers'">View Customers</button>
+            <button class="nav-option" id="view-customers"  onclick="location.href='./viewUsers'">View Other Users</button>
+            <button class="nav-option" id="view-customers"  onclick="location.href='./viewRecentReplies'">Unread Replies</button>
+        </div>
+        <div id="right-bar">
+            <button class="nav-option" id="log-out" onclick="location.href='./logout'">Log Out</button>
+
+        </div>
+        <div id="user-menu">
+            <button class="menu-option" id="view-settings" onclick="location.href='./userProfile'">Profile</button>
+            <button class="menu-option" id="log-out" onclick="location.href='./logout'">Log Out</button>
+        </div>
+    </div>
+</header>
+    <div id="messages-main-container">
+    <h1>{{customer}}</h1>
+	{% for item in data %}
+	<div class="message-section">
+		<div class="{{item['type']}}">
+			<div class="single-message">
+				<p class="message-body">{{item['body']}}</p>
+			</div>
+			<p class="time-sent">{{item['time']}}</p>
+		</div>
+	</div>
+	{% endfor %}
+    </div>
+    <script>
+        userSettings = document.getElementById("user-settings")
+        userSettings.addEventListener("click", function (){
+            if (document.getElementById("user-menu").style.display == "flex"){
+                document.getElementById("user-menu").style.display = "none"
+            }else{
+                document.getElementById("user-menu").style.display = "flex"
+            }
+        })
+    </script>
+</body>
+</html>
+

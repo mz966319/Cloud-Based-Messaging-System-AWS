@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>View Users</title>
+    <link rel= "stylesheet" type= "text/css" href= "{{ url_for('static', filename ='styles/styles.css') }}">
+    <style>
+        #customer-list-container{
+            border-radius: 5px;
+            width: 95%;
+            background-color: #f2f2f2;
+            padding: 20px;
+            padding-top: 85px;
+            overflow: hidden;
+        }
+	#customers_table {
+		border-collapse: collapse;
+		width: 35%;
+        margin: auto;
+	}
+
+	.table_cell {
+		border: 2px black;
+		padding: 15px;
+		text-align: center;
+
+	}
+
+	.table_row:hover {
+		background-color: #999999;
+	}
+
+	#customers_table th {
+		padding: 15px 10px 15px 10px;
+		text-align: center;
+		background-color: rgba(0, 0, 0, 0.507);
+		color: white;
+	}
+	.table_row_view_button{
+                hight:100%;
+                width: 100%;
+		float:left;
+                padding: 15px 0px 15px 0px;
+                margin:0;
+                border: none;
+                background: none;
+                display:block;
+        }
+	.table_select_cell{
+		width:20px;
+	}
+	.table_row_view_button:hover{
+		background-color:gray;
+		color:white;
+	}
+	.table_button_cell{
+		border:none;
+		border-top-style: hidden;
+		border-bottom-style: hidden;
+	}
+
+	tr:nth-child(odd) {background: #CCC}
+	tr:nth-child(even) {background: #FFF}
+	#filter-form{ float:right}
+    </style>
+</head>
+<body>
+    <header>
+    <div id="nav-bar">
+        <div id="left-bar">
+            <button class="nav-option" id="send-message" onclick="location.href='./sendMessage'">Send Message</button>
+            <button class="nav-option" id="add-customers" onclick="location.href='./addNewCustomer'">Add Customers</button>
+            <button class="nav-option" id="view-customers"  onclick="location.href='./viewCustomers'">View Customers</button>
+			<button class="nav-option" id="view-customers"  onclick="location.href='./viewUsers'">View Other Users</button>
+            <button class="nav-option" id="view-customers"  onclick="location.href='./viewRecentReplies'">Unread Replies</button>
+        </div>
+        <div id="right-bar">
+			<button class="nav-option" id="log-out" onclick="location.href='./logout'">Log Out</button>
+        </div>
+
+    </div>
+    </header>
+	</div>
+	<h1>Users List:</h1>
+	<table id="customers_table">
+  		<tr>
+			<th class="table_cell">User ID</th>
+			<th>Number of Customers</th>
+			<th style="text-align: center;">Option</th>
+
+		</tr>
+		{% for item in data %}
+			<tr class="table_row">
+				<form action="{{url_for('users_list_buttons_handler')}}" method="POST">
+					<td class="table_cell">{{item['id']}}</td>
+					<input type="hidden" id="customerID" name="userID" value={{item['id']}}>
+
+					<td class="table_cell">{{item['customersCount']}}</td>
+
+					<td class="table_button_cell">
+                        <input class="table_row_view_button" type="submit" name ="action" value ="View Customers">
+					</td>
+				</form>
+			</tr>
+		{% endfor %}
+	</table>
+
+    </div>
+	
+    <script>
+        userSettings = document.getElementById("user-settings")
+        userSettings.addEventListener("click", function (){
+            if (document.getElementById("user-menu").style.display == "flex"){
+                document.getElementById("user-menu").style.display = "none"
+            }else{
+                document.getElementById("user-menu").style.display = "flex"
+            }
+        })
+    </script>
+</body>
+</html>

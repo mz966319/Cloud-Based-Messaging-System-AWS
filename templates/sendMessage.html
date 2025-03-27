@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Send Messages</title>
+    <link rel= "stylesheet" type= "text/css" href= "{{ url_for('static', filename ='styles/styles.css') }}">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <style>
+        input[type=submit]:hover{
+            cursor: pointer;
+            background-color: rgba(0, 0, 0, 0.705);
+        }
+
+        input[type=text], textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+            margin-top: 6px;
+            margin-bottom: 16px;
+            resize: vertical;
+        }
+
+        input[type=submit] {
+            background-color: #00000054;
+            color: white;
+            padding: 12px 20px;
+            margin-top: 40px;
+            border-top: none;
+            border-bottom: none;
+            border-right: 2px solid rgba(0, 0, 0, 0.603);
+            border-left: 2px solid rgba(0, 0, 0, 0.603);
+            border-radius: 10px;
+            cursor: pointer;
+            
+        }
+
+        #send-fields {
+            border-radius: 5px;
+            background-color: #f2f2f2;
+            padding: 20px;
+            padding-top: 85px;
+            overflow: hidden;
+        }
+         #form-left-container,#form-right-container{
+            padding: 20px;
+            width: 50%;
+            float:left;
+        }
+        #form-right-container{
+            padding-top: 140px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        #sms-checkbox-container,#email-checkbox-container,#submitButton{
+            margin-bottom: 20px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        #searchUser {
+        background-image: url('/static/searchicon.png');
+        background-position: 10px 12px; 
+        background-repeat: no-repeat;
+        background-size: 21px;
+        width: 100%;
+        font-size: 16px; 
+        padding: 12px 20px 12px 40px; 
+        border: 1px solid #ddd;
+        margin-bottom: 12px;
+        }
+
+        #UserList {
+        list-style-type: none;
+        padding: 0;
+        margin: 0;
+        }
+
+        #UserList li a {
+        border: 2px solid rgb(160, 152, 118); 
+        margin-top: -1px; 
+        background-color: #f6f6f6; 
+        padding: 12px; 
+        text-decoration: none; 
+        font-size: 18px;
+        color: black;
+        display: block;
+        border-radius: 4px;
+        }
+
+        #UserList li a:hover:not(.header) {
+        background-color: rgb(153, 153, 153);
+        cursor: pointer;
+        }
+
+        #usersTobeSentTo{
+            height:100px;
+            display:flex;
+            flex-flow: row wrap;
+            background-color: white;
+            border: 1px solid #ddd;
+            border-radius: 3px;
+        }
+        #usersTobeSentTo li{
+            border: 2px solid rgb(160, 152, 118); 
+            border-radius: 3px;
+            color: black;
+            background-color: #eee;
+            display: block;
+            font-size: 16px;
+            margin-top: -1px; 
+            padding: 6px;
+            min-width: 50px;
+            height: fit-content;
+            width: fit-content;
+            margin-right: 4px;
+            text-align: center;
+        }
+        #usersTobeSentTo li:hover{
+            cursor: pointer;
+            border: 2px solid red;
+            background-color: rgb(153, 153, 153);
+        }
+        #reply-option-div{
+            display: flex;
+            flex-direction: row;
+            margin-bottom: 50px;
+            align-items: center;
+            justify-content: center;
+            margin-left: -30px;
+        }
+        #reply-option-div input{
+                margin-top: auto;
+                margin-right: 30px;
+        }
+    </style> 
+</head>
+<body>
+    <div id="nav-bar">
+        <div id="left-bar">
+            <button class="nav-option" id="send-message" onclick="location.href='./sendMessage'">Send Message</button>
+            <button class="nav-option" id="add-customers" onclick="location.href='./addNewCustomer'">Add Customers</button>
+            <button class="nav-option" id="view-customers"  onclick="location.href='./viewCustomers'">View Customers</button>
+            <button class="nav-option" id="view-customers"  onclick="location.href='./viewUsers'">View Other Users</button>
+            <button class="nav-option" id="view-customers"  onclick="location.href='./viewRecentReplies'">Unread Replies</button>
+        </div>
+
+        <div id="right-bar">
+            <button class="nav-option" id="log-out" onclick="location.href='./logout'">Log Out</button>
+        </div>
+        <div id="user-menu">
+            <button class="menu-option" id="view-settings" onclick="location.href='./userProfile'">Profile</button>
+            <button class="menu-option" id="log-out" onclick="location.href='./logout'">Log Out</button>
+        </div>
+    </div>
+
+
+
+    <div id="send-fields">
+        <h1>Send a message</h1>
+        <form >
+            <div id="form-left-container">
+                <label for="subject">Type message subject :</label>
+                <input type="text" id="subject" name="subject" placeholder="Enter your message subject.."></input>
+		        <label for="body">Type your message here to be sent to customers:</label>
+                <textarea id="body" name="body" placeholder="Enter your message.." style="height:200px"></textarea>                
+                <div id="usersTobeSentTo" name="usersTobeSentTo"  style="height:100px"></div>
+                <input type="text" id="searchUser" onkeyup="UserSearchEvent()" placeholder="Search for users by Name, Number or Email Address">
+                <ul id="UserList">
+                    
+                </ul>
+		
+            </div>
+            <div id="form-right-container">
+                <h3>Reply Type:</h3>
+                <p>Choose the type of reply that will be prompted to user and retrieved.</p>
+                <div id="reply-option-div">
+                    <label><br>Confirmation Reply:</label>
+                    <input type="radio" name="reply_options" id="option1" value="Confirmation" checked="checked">
+                    <label><br>Text Reply:</label>
+                    <input type="radio" name="reply_options" id="option2" value="Text">
+                </div>
+                <p>Choose the message sending mechanism.</p>
+                <div id="sms-checkbox-container">
+                    <input type="checkbox" id="sendSMS" name="sendSMS" checked="checked">
+                    <label for="sendSMS"> Send SMS</label><br>
+                </div>
+                <div id="email-checkbox-container">
+                    <input type="checkbox" id="sendEmail" name="sendEmail" checked="checked">
+                    <label for="sendEmail"> Send Email</label><br>
+                </div> 
+                <input type="button" onclick="postForm()" id="submetButton" value="Submit"> 
+                
+            </div>
+          </form>
+    </div>
+    <script>
+
+        let Status = {{Status | tojson}}
+        
+
+        ////////////////////////
+        // initializing user list
+        let Value = {{value | tojson}}
+        console.log(Value)
+        UserCustomers = []
+        for (let i = 0; i < Value.length; i++){
+            UserCustomers.push([Value[i]['name'],Value[i]['email'],Value[i]['phone'],Value[i]['id']])
+        }
+
+        ///////////////////////////
+        UserSearchEvent();
+        function UserSearchEvent() {
+        // retrieving objects from document
+        var input = document.getElementById('searchUser')
+        var filter = input.value.toUpperCase()
+        var userList = document.getElementById("UserList")
+        userList.innerHTML = ""
+        SelectedUsersArea = document.getElementById("usersTobeSentTo")
+        namesInSelectedArea = SelectedUsersArea.getElementsByClassName("UserListItemSelected")
+        // creating and adding event listeners to list items according to filter content
+        function isNameSelected(name){
+            for (var x = 0; x < namesInSelectedArea.length; x++){
+                if(name.toUpperCase().indexOf(namesInSelectedArea[x].innerText.toUpperCase())> -1){
+                    console.log("Returning True")
+                    return true
+                }
+            }
+        }
+            for (let x = 0; x < UserCustomers.length; x++){
+                if((UserCustomers[x][0].toUpperCase().indexOf(filter) > -1 && !isNameSelected(UserCustomers[x][0]))  || (UserCustomers[x][1].toUpperCase().indexOf(filter) > -1 && !isNameSelected(UserCustomers[x][0]))  || (UserCustomers[x][2].toUpperCase().indexOf(filter) > -1&& !isNameSelected(UserCustomers[x][0])) ){
+                    let item = document.createElement("a")
+                    item.className = "UserListItem"
+                    item.innerText = UserCustomers[x][0]
+                    item.id = UserCustomers[x][3]
+                    let listItem = document.createElement("li")
+                    listItem.addEventListener("click", addUserBox)
+                    listItem.appendChild(item)
+                    userList.appendChild(listItem)
+                }
+            }
+        }
+
+
+        function addUserBox(){
+            let a = this.cloneNode(true)
+            this.remove()
+            a.addEventListener("click",removeUserBox)
+            a.className = "UserListItemSelected"
+            document.getElementById("usersTobeSentTo").appendChild(a)
+        }
+
+        function removeUserBox(){
+            let a = this.cloneNode(true)
+            this.remove()
+            a.addEventListener("click",addUserBox)
+            a.className = "UserListItem"
+            document.getElementById("UserList").appendChild(a)
+        }
+
+        function postForm(){
+            
+
+            var customers = document.getElementsByClassName('UserListItemSelected')
+            var customerIDs = ""
+            for(var i = 0; i < customers.length; i++){
+                customerIDs += (customers[i].firstChild.id + ",")
+            }
+
+            var parameters = {subject: document.getElementById('subject').value,
+                            body: document.getElementById('body').value,
+                            customers:customerIDs,
+                            sendEmail: document.getElementById("sendEmail").checked,
+                            sendSMS: document.getElementById("sendSMS").checked,
+                            replyOption: document.querySelector('input[name="reply_options"]:checked').value
+                            }
+            console.log(parameters)
+            post("/sendMessage",parameters)
+
+        }
+
+        function post(path, parameters) {
+            var form = $('<form></form>');
+
+            form.attr("method", "post");
+            form.attr("action", path);
+
+            $.each(parameters, function(key, value) {
+                
+                    var field = $('<input />');
+                    field.attr("type", "hidden");
+                    field.attr("name", key);
+                    field.attr("value", value);
+                    form.append(field);
+                
+            });
+            $(document.body).append(form);
+            form.submit();
+        }
+        console.log(document.readyState)
+        console.log(Status)
+        if(Status != ""){
+            window.addEventListener('load', function () {
+                alert(Status)
+            })
+        }
+    </script>
+</body>
+</html>

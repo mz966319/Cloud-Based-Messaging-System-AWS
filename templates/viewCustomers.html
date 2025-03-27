@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>View Customers</title>
+    <link rel= "stylesheet" type= "text/css" href= "{{ url_for('static', filename ='styles/styles.css') }}">
+    <style>
+	#customer-list-container{
+		border-radius: 5px;
+		width: 95%;
+		margin: auto;
+		background-color: #f2f2f2;
+		padding: 20px;
+		padding-top: 85px;
+		overflow: hidden;
+	}
+	#customers_table {
+		border-collapse: collapse;
+		width: 100%;
+		
+	}
+
+	.table_cell {
+		border: 2px black;
+		padding: 15px;
+	}
+
+	.table_row:hover {
+		background-color: #999999;
+	}
+
+	#customers_table th {
+		padding: 15px 10px 15px 10px;
+		text-align: left;
+		background-color: rgba(0, 0, 0, 0.507);
+		color: white;
+	}
+	.table_row_add_button{
+		height: 100%;
+		width: 50%;
+		float: left;
+		padding: 15px 0px 15px 0px;
+		margin:0;
+		border: none;
+		background: none;
+		display:block;
+	}
+	.table_select_cell{
+		width:20px;
+	}
+
+	.table_row_delete_button{
+		height:100%;
+		width: 50%;
+		float:right;
+                padding: 15px 0px 15px 0px;
+		margin:0;
+		border: none;
+		background: none;
+		display:block;
+	}
+        .table_row_delete_button:hover, .table_row_edit_button:hover{
+		background-color:gray;
+		color:white;
+	}
+	.table_button_cell{
+		border:none;
+		border-top-style: hidden;
+		border-bottom-style: hidden;
+	}
+
+	tr:nth-child(odd) {background: #CCC}
+	tr:nth-child(even) {background: #FFF}
+	#reload-button{
+		float: right;
+		font-size : 14px;
+		margin-left:15px;
+	}
+	#filter-form{ 
+		float:right;
+	}
+	#hide-filter-form,#hide-table_buttons_header,.hide-table_button_cell{
+		display: none;
+	}
+    </style>
+</head>
+<body>
+    <header>
+    <div id="nav-bar">
+        <div id="left-bar">
+            <button class="nav-option" id="send-message" onclick="location.href='./sendMessage'">Send Message</button>
+            <button class="nav-option" id="add-customers" onclick="location.href='./addNewCustomer'">Add Customers</button>
+            <button class="nav-option" id="view-customers"  onclick="location.href='./viewCustomers'">View Customers</button>
+	    <button class="nav-option" id="view-customers"  onclick="location.href='./viewUsers'">View Other Users</button>
+	    <button class="nav-option" id="view-customers"  onclick="location.href='./viewRecentReplies'">Unread Replies</button>
+        </div>
+
+        <div id="right-bar">
+			<button class="nav-option" id="log-out" onclick="location.href='./logout'">Log Out</button>
+        </div>
+    </div>
+    </header>
+    <div id="customer-list-container">
+	<div id="filter-form">
+		<form action="{{url_for('viewCustomers')}}" method="POST">
+	        <label for="name">Filter:</label>
+			<input type="radio" name="filter_options" id="option1" value="Available">Available  </input>
+			<input type="radio" name="filter_options" id="option2" value="Deleted">Archived  </input>
+			<input type="radio" name="filter_options" id="option3" value="All">All  </input>
+			<input type="submit" id="reload-button" value="Reload ⟳">
+		</form>
+	</div>
+	<h1>Customers List: ({{type}})</h1>
+	<table id="customers_table">
+  		<tr>
+			<th>Select</th>
+			<th class="table_cell">Customer ID</th>
+			<th class="table_cell">Customer Name</th>
+			<th class="table_cell">Email Address</th>
+			<th class="table_cell">Phone Number</th>
+			<th class="table_cell">Employee ID</th>
+			<th id="table_buttons_header" style="text-align: center;">Options</th>
+		</tr>
+		{% for item in data %}
+			<tr class="table_row" onclick="window.location='./showMessages?id={{item['id']}}&name={{item['name']}}&userid={{item['userid']}}';">
+				<form action="{{url_for('update_customer_from_list_handler')}}" method="POST">
+					<td class="table_select_cell"><input type="checkbox" checked="checked"></td>
+					<td class="table_cell">{{item['id']}}</td>
+					<input type="hidden" id="customerID" name="customerID" value={{item['id']}}>
+					<input type="hidden" id="customerName" name="customerName" value={{item['name']}}>
+					<input type="hidden" id="customerID" name="customerPhone" value={{item['phone']}}>
+					<input type="hidden" id="customerID" name="customerEmail" value={{item['email']}}>
+					<input type="hidden" id="customerID" name="customerUserID" value={{item['userid']}}>
+					<input type="hidden" name="searchType" value={{type}}>
+					<td class="table_cell">{{item['name']}}</td>
+					<td class="table_cell">{{item['email']}}</td>
+					<td class="table_cell">{{item['phone']}}</td>
+					<td class="table_cell">{{item['userid']}}</td>
+					<td class="table_button_cell">
+						{% if type == "Available" %}
+						<input class="table_row_delete_button" type="submit" name = "action" value ="Delete">
+						{% else %}
+							{% if item['userid'] != currentUser or type == "Deleted" %}
+								<input class="table_row_add_button" type="submit" name = "action" value ="Add">
+							{% endif %}
+						{% endif %}
+					</td>
+				</form>
+			</tr>
+		{% endfor %}
+	</table>
+
+    </div>
+	
+    <script>
+		SearchType = {{type|tojson}}
+		if(SearchType == "Available"){
+			document.getElementById('option1').setAttribute("checked","checked")
+		}else if(SearchType == "Deleted"){
+			document.getElementById('option2').setAttribute("checked","checked")
+		}else if(SearchType == "All"){
+			document.getElementById('option3').setAttribute("checked","checked")
+		}
+		console.log({{data|tojson}} + SearchType)
+    </script>
+</body>
+</html>

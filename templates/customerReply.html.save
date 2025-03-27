@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Confirm</title>
+    <style>
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: grey;
+        }
+        p{
+            font-size: 5vw;
+        }
+        #main{
+            margin-top: 25vh;
+            background-color: white;
+            border-radius: 10px;
+            width: 70vw;
+            height: 40vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .button{
+            justify-content: center;
+            height: 35vw;
+            width: 35vw;
+            border-radius: 10px;
+            background-color: #bfbfbf;
+            border-color: #999999;
+            border-width: 5px;
+            color: black;
+            padding: 12px 30px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 0px 0px;
+        }
+        .button:hover{
+            cursor: pointer;
+            background-color: #999999;
+        }
+        #options{
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: center;
+        }
+        #confirm_button{
+            float: left;
+        }
+        #deny_button{
+            float: right;
+        }
+	.text-confirm_buttons{
+		display:none;
+	}
+	.confirm-text_input{
+		display:none;
+	}
+	#text-confirm_message{
+		display:none;
+	}
+	#confirm-text_message{
+		display:none;
+	}
+    </style>
+</head>
+
+<body>
+    <div id="main">
+        <p id="{{type}}confirm_message">Please Choose option</p>
+	<p id="{{type}}text_message">Please enter your reply</p>
+        <div id="options">
+        <form action="{{url_for('customer_reply_handler')}}" method="POST">
+            <input type="hidden" id="messageID" name="messageID" value={{messageID}}>
+	    <div class="{{type}}confirm_buttons">
+            	<input id="confirm_button"class="button" type="submit" name ="action" value ="Confirm">
+		<input id="deny_button"class="button" type="submit" name = "action" value ="Deny">	    
+	    </div>
+	    
+            <div class="{{type}}text_input">
+	    	<input  type="text" name="text_message" placeholder="Enter your reply..">
+	    	<input id="submet_button" type="submit" name = "action" value ="Send">
+	    </div>
+        </form>
+        </div>
+        
+    </div>
+</body>
+</html>

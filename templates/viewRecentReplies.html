@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>View Customers</title>
+    <link rel= "stylesheet" type= "text/css" href= "{{ url_for('static', filename ='styles/styles.css') }}">
+    <style>
+        #customer-list-container{
+            border-radius: 5px;
+            width: 95%;
+                        margin: auto;
+            background-color: #f2f2f2;
+            padding: 20px;
+            padding-top: 85px;
+            overflow: hidden;
+        }
+        #customers_table {
+                border-collapse: collapse;
+                width: 100%;
+
+        }
+
+        .table_cell {
+                border: 2px black;
+                padding: 15px;
+        }
+
+        .table_row:hover {
+                background-color: #999999;
+        }
+
+        #customers_table th {
+                padding: 15px 10px 15px 10px;
+                text-align: left;
+                background-color: rgba(0, 0, 0, 0.507);
+                color: white;
+        }
+        .table_row_edit_button{
+                hight:100%;
+                width: 50%;
+                float:left;
+                padding: 15px 0px 15px 0px;
+                margin:0;
+                border: none;
+                background: none;
+                display:block;
+        }
+        .table_select_cell{
+                width:20px;
+        }
+
+        .table_row_delete_button{
+                hight:100%;
+                width: 50%;
+                float:right;
+                padding: 15px 0px 15px 0px;
+                margin:0;
+                border: none;
+                background: none;
+                display:block;
+        }
+
+        .table_row_delete_button:hover, .table_row_edit_button:hover{
+                background-color:gray;
+                color:white;
+        }
+        .table_button_cell{
+                border:none;
+                border-top-style: hidden;
+                border-bottom-style: hidden;
+        }
+
+        tr:nth-child(odd) {background: #CCC}
+        tr:nth-child(even) {background: #FFF}
+        #reload-button{
+                float: right;
+                font-size : 14px;
+                margin-left:15px;
+        }
+        #filter-form{
+                float:right;
+        }
+        #hide-filter-form,#hide-table_buttons_header,.hide-table_button_cell{
+                display: none;
+        }
+	#hide-empty_list_message{
+		display:none;
+	}
+	
+    </style>
+</head>
+<body>
+  <header>
+    <div id="nav-bar">
+        <div id="left-bar">
+            <button class="nav-option" id="send-message" onclick="location.href='./sendMessage'">Send Message</button>
+            <button class="nav-option" id="add-customers" onclick="location.href='./addNewCustomer'">Add Customers</button>
+            <button class="nav-option" id="view-customers"  onclick="location.href='./viewCustomers'">View Customers</button>
+            <button class="nav-option" id="view-customers"  onclick="location.href='./viewUsers'">View Other Users</button>
+	    <button class="nav-option" id="view-customers"  onclick="location.href='./viewRecentReplies'">Unread Replies</button>
+
+        </div>
+
+        <div id="right-bar">
+                        <button class="nav-option" id="log-out" onclick="location.href='./logout'">Log Out</button>
+        </div>
+    </div>
+    </header>
+    <div id="customer-list-container">
+        <h1>Unread replies</h1>
+        <table id="customers_table">
+                <tr>
+                        <th class="table_cell">From</th>
+                        <th class="table_cell">Message</th>
+                        <th class="table_cell">Reply</th>
+                </tr>
+                {% for item in data %}
+                        <tr class="table_row" onclick="window.location='./showMessages?id={{item['id']}}&name={{item['name']}}&userid={{item['userid']}}&index={{item['index']}}';">
+	                        <td class="table_cell">{{item['name']}}</td>
+	                        <td class="table_cell">{{item['message']}}</td>
+	                        <td class="table_cell">{{item['reply']}}</td>
+                        </tr>
+                {% endfor %}
+        </table>
+	<p id="{{hide}}empty_list_message" style="text-align: center;"><br><br><br>You don't have any new replies..</p>
+    </div>
+</body>
+</html>
+

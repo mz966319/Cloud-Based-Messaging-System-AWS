@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile Settings</title>
+    <link rel= "stylesheet" type= "text/css" href= "{{ url_for('static', filename ='styles/styles.css') }}">
+    <style>
+        #add-customer-fields{
+            border-radius: 5px;
+            background-color: #f2f2f2;
+            padding: 20px;
+            padding-top: 85px;
+            overflow: hidden;
+        }
+        input[type=text], input[type=password] {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+            margin-top: 6px;
+            margin-bottom: 16px;
+            resize: vertical;
+        }
+
+        input[type=submit] {
+            background-color: #00000054;
+            color: white;
+            padding: 12px 20px;
+            margin-top: 40px;
+            border-top: none;
+            border-bottom: none;
+            border-right: 2px solid rgba(0, 0, 0, 0.603);
+            border-left: 2px solid rgba(0, 0, 0, 0.603);
+            border-radius: 10px;
+            cursor: pointer;
+
+        }
+    </style>
+</head>
+<body>
+    <div id="nav-bar">
+        <div id="left-bar">
+            <button class="nav-option" id="send-message" onclick="location.href='./sendMessage'">Send Message</button>
+            <button class="nav-option" id="add-customers" onclick="location.href='./addNewCustomer'">Add Customers</button>
+            <button class="nav-option" id="view-customers"  onclick="location.href='./viewCustomers'">View Customers</button>
+            <button class="nav-option" id="view-customers"  onclick="location.href='./viewUsers'">View Other Users</button>
+            <button class="nav-option" id="view-customers"  onclick="location.href='./viewRecentReplies'">Unread Replies</button>        
+	</div>
+        <div id="right-bar">
+            <button class="nav-option" id="log-out" onclick="location.href='./logout'">Log Out</button>
+        </div>
+        <div id="user-menu">
+            <button class="menu-option" id="view-settings">Profile</button>
+            <button class="menu-option" id="log-out" onclick="location.href='./logout'">Log Out</button>
+        </div>
+    </div>
+    <div id="add-customer-fields">
+        <h1>Update Customer ({{data['name']}}) Information</h1>
+        <form action="{{url_for('update_customer_info_handler')}}" method="POST">
+        <input type="hidden" name="id"value="{{data['id']}}">
+	    <label for="name">Name</label>
+            <input type="text" id="name" name="name" placeholder="Update Customer Name.." value="{{data['name']}}">
+            <label for="email">Email address</label>
+            <input type="text" id="email" name="email" placeholder="Update Customer Email Address.." value="{{data['email']}}">
+            <label for="phoneNumber">Phone number</label>
+            <input type="text" id="phoneNumber" name="phone" placeholder="Update Customer Phone Number.." value="{{data['phone']}}">
+            <input type="submit" value="Update">
+          </form>
+    </div>
+
+    <script>
+        
+    </script>
+</body>
+</html>
+
+

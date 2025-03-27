@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome</title>
+    <style>
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: grey;
+        }
+        #main{
+            margin-top: 25vh;
+            background-color: white;
+            border-radius: 10px;
+            width: 30vw;
+            height: 50vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        #main p{
+            text-align: center;
+        }
+        .button{
+            border-radius: 10px;
+            background-color: #bfbfbf;
+            border-color: #999999;
+            border-width: 5px;
+            color: black;
+            padding: 12px 30px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 0px 10px;
+        }
+        .button:hover{
+            cursor: pointer;
+            background-color: #999999;
+        }
+        #options{
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: center;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="main">
+        <h1>Welcome to the Messages Manager</h1>
+        <br />
+        <p>This website works as a messaging and emailing system where you will be able to create an account and will be able to send SMS messages and emails to customers and receive replies from them</p>
+        <p>To Start choose Signup or Login if you have an account</p>
+        <br /><br />
+        <div id="options">
+        <button id="Signup" class="button" onclick="location.href='https://csci4145app.auth.us-east-1.amazoncognito.com/login?client_id=7c83n8ntqbb3ho6gpsiakijhko&response_type=token&scope=aws.cognito.signin.user.admin+email+openid+phone&redirect_uri=http://localhost:5000/landing'">Sign up</button>
+        <button id="Login" class="button" onclick='location.href="https://csci4145app.auth.us-east-1.amazoncognito.com/login?client_id=7c83n8ntqbb3ho6gpsiakijhko&response_type=token&scope=aws.cognito.signin.user.admin+email+openid+phone&redirect_uri=http://localhost:5000/landing"'>Login</button>
+        </div>
+        
+    </div>
+</body>
+</html>

@@ -1,0 +1,32 @@
+#add-customer-fields{
+	border-radius: 5px;
+	width: 60%;
+	background-color: #f2f2f2;
+	padding: 20px;
+	padding-top: 85px;
+	overflow: hidden;
+}
+input[type=text] {
+	width: 100%;
+	padding: 12px;
+	border: 1px solid #ccc;
+	border-radius: 4px;
+	box-sizing: border-box;
+	margin-top: 6px;
+	margin-bottom: 16px;
+	resize: vertical;
+}
+
+input[type=submit] {
+	background-color: #00000054;
+	color: white;
+	padding: 12px 20px;
+	margin-top: 40px;
+	border-top: none;
+	border-bottom: none;
+	border-right: 2px solid rgba(0, 0, 0, 0.603);
+	border-left: 2px solid rgba(0, 0, 0, 0.603);
+	border-radius: 10px;
+	cursor: pointer;
+
+}
